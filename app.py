@@ -6,20 +6,33 @@ import os
 
 load_dotenv()
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+api_key = os.getenv("OPENAI_API_KEY")
 
-# OpenAI
 client_openai = OpenAI(
-    api_key=st.secrets["OPENAI_API_KEY"]
+    api_key=api_key
 )
-
 # ChromaDB
 client_db = chromadb.PersistentClient(path="sap_co_db")
 collection = client_db.get_collection("sap_co")
 
-st.title("SAP CO AI Assistant")
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
+st.sidebar.title("SAP CO Modules")
+
+module = st.sidebar.selectbox(
+    "Select Module",
+    [
+        "Cost Center Accounting",
+        "Internal Orders",
+        "Profit Center Accounting",
+        "Activity Based Costing",
+        "Product Costing"
+    ]
+)
+st.title("🤖 SAP CO AI Assistant")
+st.subheader("AI-Powered SAP Controlling Knowledge Assistant")
+st.markdown("---")
 question = st.text_input("Ask SAP CO Question")
 
 if question:
