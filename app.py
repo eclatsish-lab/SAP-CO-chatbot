@@ -1,18 +1,21 @@
 import streamlit as st
 import sys
-
-st.write("Python Version:")
-st.write(sys.version)
-
-import streamlit as st
 import chromadb
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
+st.write("Python Version:")
+st.write(sys.version)
+
+
 load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    st.error("OPENAI_API_KEY not found")
+    st.stop()
 
 client_openai = OpenAI(
     api_key=api_key
@@ -20,73 +23,12 @@ client_openai = OpenAI(
 # ChromaDB
 
 client_db = chromadb.PersistentClient(path="sap_co_db")
-collection = client_db.get_collection("sap_co")
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+st.write("Database Path Exists:", os.path.exists("sap_co_db"))
+st.write("SQLite Exists:", os.path.exists("sap_co_db/chroma.sqlite3"))
 
-st.sidebar.title("SAP CO Modules")
+collections = client_db.list_collections()
+st.write("Collections:", collections)
 
-module = st.sidebar.selectbox(
-    "Select Module",
-    [
-        "Cost Center Accounting",
-        "Internal Orders",
-        "Profit Center Accounting",
-        "Activity Based Costing",
-        "Product Costing"
-    ]
-)
-st.title("🤖 SAP CO AI Assistant")
-st.subheader("AI-Powered SAP Controlling Knowledge Assistant")
-st.markdown("---")
-question = st.text_input("Ask SAP CO Question")
+st.stop()
 
-if question:
-
-    # Search
-    results = collection.query(
-        query_texts=[question],
-        n_results=3
-    )
-
-    context = "\n".join(results["documents"][0])
-
-    prompt = f"""
-You are a senior SAP CO Consultant.
-
-Context:
-{context}
-
-Question:
-{question}
-
-Provide:
-1. Explanation
-2. Configuration Steps
-3. T-Codes
-4. Tables
-5. Important Notes
-6. Source Chapter/Page
-"""
-
-    response = client_openai.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role":"user","content":prompt}
-        ]
-    )
-
-    st.session_state.messages.append(
-        {"role":"user","content":question}
-    )
-
-    st.session_state.messages.append(
-        {"role":"assistant","content":response.choices[0].message.content}
-    )
-
-    for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            st.write("🧑 User:", msg["content"])
-        else:
-            st.write("🤖 SAP CO AI:", msg["content"])
