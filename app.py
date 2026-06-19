@@ -64,12 +64,13 @@ if audio:
     with open(audio_file, "rb") as f:
         transcript = client_openai.audio.transcriptions.create(
             model="whisper-1",
-            file=f
+            file=f,
+            language="en"
         )
 
     question = transcript.text
 
-    st.success(f"🎤 You said: {question}")
+    st.info(f"🎤 Detected Question: {question}")
 
 
 typed_question = st.chat_input("Ask SAP CO Question")
@@ -88,6 +89,8 @@ if question:
 
     prompt = f"""
     You are a senior SAP CO Consultant.
+
+    Always answer in English.
 
 Module:
 {module}
