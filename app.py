@@ -31,8 +31,12 @@ client_db = chromadb.PersistentClient(path="sap_co_db")
 st.write("Database Path Exists:", os.path.exists("sap_co_db"))
 st.write("SQLite Exists:", os.path.exists("sap_co_db/chroma.sqlite3"))
 
-collections = client_db.list_collections()
-st.write("Collections:", collections)
+try:
+    collections = client_db.list_collections()
+    st.write("Collections:", collections)
+
+except Exception as e:
+    st.error(f"LIST ERROR: {e}")
 
 st.stop()
 
