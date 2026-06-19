@@ -12,15 +12,9 @@ client_openai = OpenAI(
     api_key=api_key
 )
 # ChromaDB
+
 client_db = chromadb.PersistentClient(path="sap_co_db")
 collection = client_db.get_collection("sap_co")
-
-client_db = chromadb.PersistentClient(path="sap_co_db")
-
-try:
-    collection = client_db.get_collection("sap_co")
-except Exception as e:
-    st.error(f"ChromaDB Error: {e}")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
