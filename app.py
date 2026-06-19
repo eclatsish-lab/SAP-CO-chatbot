@@ -23,6 +23,20 @@ client_db = chromadb.PersistentClient(path="sap_co_db")
 collection = client_db.get_collection("sap_co")
 
 st.success("Database Connected Successfully")
+st.write("Testing Collection Query...")
+
+try:
+    test = collection.query(
+        query_texts=["What is Cost Center Accounting?"],
+        n_results=1
+    )
+
+    st.write(test)
+    st.success("Query Working")
+
+except Exception as e:
+    st.error(f"QUERY ERROR: {e}")
+
 st.stop()
 
 if "messages" not in st.session_state:
