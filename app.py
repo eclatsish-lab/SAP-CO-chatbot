@@ -79,8 +79,6 @@ Provide:
         ]
     )
 
-    st.write(response.choices[0].message.content)
-
     st.session_state.messages.append(
         {"role":"user","content":question}
     )
