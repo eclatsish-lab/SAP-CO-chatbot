@@ -44,7 +44,7 @@ st.subheader("AI-Powered SAP Controlling Knowledge Assistant")
 
 st.markdown("---")
 
-question = st.text_input("Ask SAP CO Question")
+question = st.chat_input()("Ask SAP CO Question")
 
 if question:
 
@@ -56,6 +56,11 @@ if question:
     context = "\n".join(results["documents"][0])
 
     prompt = f"""
+You are a senior SAP CO Consultant.
+
+Module:
+{module}
+
 Context:
 {context}
 
@@ -71,6 +76,8 @@ Provide:
 6. Source Chapter/Page
 """
 
+start = time.time()
+
     response = client_openai.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -78,6 +85,8 @@ Provide:
     
         ]
     )
+    
+   response_time = round(time.time() - start, 2)
 
     st.session_state.messages.append(
         {"role":"user","content":question}
@@ -86,12 +95,11 @@ Provide:
     st.session_state.messages.append(
         {"role":"assistant","content":response.choices[0].message.content}
     )
+    st.caption(f"⚡ Response Time: {response_time} sec")
 
     for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            st.write("🧑 User:", msg["content"])
-        else:
-            st.write("🤖 SAP CO AI:", msg["content"])
 
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
 
 
