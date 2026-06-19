@@ -56,7 +56,7 @@ if question:
     context = "\n".join(results["documents"][0])
 
     prompt = f"""
-You are a senior SAP CO Consultant.
+    You are a senior SAP CO Consultant.
 
 Module:
 {module}
@@ -85,9 +85,9 @@ Provide:
         ]
     )
     
-   response_time = round(time.time() - start, 2)
+    response_time = round(time.time() - start, 2)
 
-   st.session_state.messages.append(
+    st.session_state.messages.append(
         {"role":"user","content":question}
     )
 
