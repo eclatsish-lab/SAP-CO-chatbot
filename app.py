@@ -44,7 +44,7 @@ st.subheader("AI-Powered SAP Controlling Knowledge Assistant")
 
 st.markdown("---")
 
-question = st.chat_input()("Ask SAP CO Question")
+question = st.chat_input("Ask SAP CO Question")
 
 if question:
 
