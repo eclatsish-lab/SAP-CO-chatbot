@@ -1,4 +1,10 @@
 import streamlit as st
+import sys
+
+st.write("Python Version:")
+st.write(sys.version)
+
+import streamlit as st
 import chromadb
 from openai import OpenAI
 from dotenv import load_dotenv
