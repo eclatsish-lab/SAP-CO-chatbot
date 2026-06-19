@@ -1,6 +1,7 @@
 import streamlit as st
 import sys
 import chromadb
+import time
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
