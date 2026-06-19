@@ -5,10 +5,6 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
-st.write("Python Version:")
-st.write(sys.version)
-
-
 load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY")
@@ -24,15 +20,24 @@ client_openai = OpenAI(
 
 client_db = chromadb.PersistentClient(path="sap_co_db")
 
-st.write("Database Path Exists:", os.path.exists("sap_co_db"))
-st.write("SQLite Exists:", os.path.exists("sap_co_db/chroma.sqlite3"))
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-try:
-    collections = client_db.list_collections()
-    st.write("Collections:", collections)
+st.sidebar.title("SAP CO Modules")
 
-except Exception as e:
-    st.error(f"LIST ERROR: {e}")
+module = st.sidebar.selectbox(
+    "Select Module",
+    [
+        "Cost Center Accounting",
+        "Internal Orders",
+        "Profit Center Accounting",
+        "Activity Based Costing",
+        "Product Costing"
+    ]
+)
+
+st.title("🤖 SAP CO AI Assistant")
+question = st.text_input("Ask SAP CO Question")
 
 st.stop()
 
