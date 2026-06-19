@@ -19,25 +19,8 @@ client_openai = OpenAI(
 # ChromaDB
 
 client_db = chromadb.PersistentClient(path="sap_co_db")
-
 collection = client_db.get_collection("sap_co")
 
-st.success("Database Connected Successfully")
-st.write("Testing Collection Query...")
-
-try:
-    test = collection.query(
-        query_texts=["What is Cost Center Accounting?"],
-        n_results=1
-    )
-
-    st.write(test)
-    st.success("Query Working")
-
-except Exception as e:
-    st.error(f"QUERY ERROR: {e}")
-
-st.stop()
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -65,16 +48,14 @@ question = st.text_input("Ask SAP CO Question")
 
 if question:
 
-    # Search
     results = collection.query(
         query_texts=[question],
-        n_results=3
+        n_results=1
     )
 
     context = "\n".join(results["documents"][0])
 
     prompt = f"""
-
 Context:
 {context}
 
@@ -94,10 +75,11 @@ Provide:
         model="gpt-4o-mini",
         messages=[
             {"role":"user","content":prompt}
+    
         ]
     )
 
-   st.write(response.choices[0].message.content)
+    st.write(response.choices[0].message.content)
 
     st.session_state.messages.append(
         {"role":"user","content":question}
@@ -113,5 +95,5 @@ Provide:
         else:
             st.write("🤖 SAP CO AI:", msg["content"])
 
-st.stop()
+
 
