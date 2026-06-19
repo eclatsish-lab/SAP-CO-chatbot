@@ -74,7 +74,6 @@ if question:
     context = "\n".join(results["documents"][0])
 
     prompt = f"""
-You are a senior SAP CO Consultant.
 
 Context:
 {context}
@@ -97,6 +96,8 @@ Provide:
             {"role":"user","content":prompt}
         ]
     )
+
+   st.write(response.choices[0].message.content)
 
     st.session_state.messages.append(
         {"role":"user","content":question}
