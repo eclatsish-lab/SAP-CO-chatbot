@@ -1,8 +1,5 @@
 streamlit==1.58.0
+openai==1.99.9
 chromadb==0.4.24
-openai
-python-dotenv
-sentence-transformers
-pymupdf
-protobuf==3.20.3
 numpy==1.26.4
+python-dotenv==1.0.1
