@@ -75,8 +75,7 @@ Provide:
 5. Important Notes
 6. Source Chapter/Page
 """
-
-start = time.time()
+    start = time.time()
 
     response = client_openai.chat.completions.create(
         model="gpt-4o-mini",
@@ -88,7 +87,7 @@ start = time.time()
     
    response_time = round(time.time() - start, 2)
 
-    st.session_state.messages.append(
+   st.session_state.messages.append(
         {"role":"user","content":question}
     )
 
