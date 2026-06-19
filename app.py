@@ -1,10 +1,6 @@
 import streamlit as st
 import sys
 import chromadb
-
-st.write("Chroma Version:", chromadb.__version__)
-st.stop()
-
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
@@ -37,8 +33,6 @@ try:
 
 except Exception as e:
     st.error(f"LIST ERROR: {e}")
-
-st.write("Chroma Version:", chromadb.__version__)
 
 st.stop()
 
