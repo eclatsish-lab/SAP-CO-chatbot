@@ -59,6 +59,8 @@ question = st.chat_input("Ask SAP CO Question")
 
 if question:
 
+audio = mic_recorder(...)
+
     results = collection.query(
         query_texts=[question],
         n_results=1
