@@ -47,6 +47,8 @@ st.subheader("AI-Powered SAP Controlling Knowledge Assistant")
 
 st.markdown("---")
 
+question = None
+
 audio = mic_recorder(
     start_prompt="🎤 Start Recording",
     stop_prompt="⏹ Stop Recording",
@@ -54,15 +56,32 @@ audio = mic_recorder(
 )
 
 if audio:
-    st.success("Voice recorded successfully")
 
-question = st.chat_input("Ask SAP CO Question")
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+        tmp.write(audio["bytes"])
+        audio_file = tmp.name
+
+    with open(audio_file, "rb") as f:
+        transcript = client_openai.audio.transcriptions.create(
+            model="whisper-1",
+            file=f
+        )
+
+    question = transcript.text
+
+    st.success(f"🎤 You said: {question}")
+
+
+typed_question = st.chat_input("Ask SAP CO Question")
+
+if typed_question:
+    question = typed_question
 
 if question:
 
     results = collection.query(
         query_texts=[question],
-        n_results=1
+        n_results=3
     )
 
     context = "\n".join(results["documents"][0])
