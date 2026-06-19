@@ -5,6 +5,7 @@ import time
 from openai import OpenAI
 from dotenv import load_dotenv
 from streamlit_mic_recorder import mic_recorder
+import tempfile
 import os
 
 load_dotenv()
@@ -58,8 +59,6 @@ if audio:
 question = st.chat_input("Ask SAP CO Question")
 
 if question:
-
-audio = mic_recorder(...)
 
     results = collection.query(
         query_texts=[question],
