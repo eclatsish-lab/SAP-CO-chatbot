@@ -96,7 +96,7 @@ Provide:
     )
     st.caption(f"⚡ Response Time: {response_time} sec")
 
-    for msg in st.session_state.messages:
+for msg in st.session_state.messages:
 
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
