@@ -4,6 +4,7 @@ import chromadb
 import time
 from openai import OpenAI
 from dotenv import load_dotenv
+from streamlit_mic_recorder import mic_recorder
 import os
 
 load_dotenv()
@@ -44,6 +45,15 @@ st.title("🤖 SAP CO AI Assistant")
 st.subheader("AI-Powered SAP Controlling Knowledge Assistant")
 
 st.markdown("---")
+
+audio = mic_recorder(
+    start_prompt="🎤 Start Recording",
+    stop_prompt="⏹ Stop Recording",
+    key="recorder"
+)
+
+if audio:
+    st.success("Voice recorded successfully")
 
 question = st.chat_input("Ask SAP CO Question")
 
