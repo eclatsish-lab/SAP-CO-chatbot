@@ -38,5 +38,7 @@ try:
 except Exception as e:
     st.error(f"LIST ERROR: {e}")
 
+st.write("Chroma Version:", chromadb.__version__)
+
 st.stop()
 
