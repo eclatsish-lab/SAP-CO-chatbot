@@ -82,10 +82,11 @@ if question:
 
     results = collection.query(
         query_texts=[question],
-        n_results=3
+        n_results=8
     )
 
     context = "\n".join(results["documents"][0])
+    st.expander("Retrieved Context").write(context)
 
     # Chat History
     chat_history = ""
@@ -98,6 +99,12 @@ if question:
     You are a senior SAP CO Consultant.
 
     Always answer in English.
+
+Answer primarily using the provided context.
+
+If the answer exists in the context, use that information.
+
+If the answer is not fully available in the context, use your SAP CO expertise but clearly indicate when you are supplementing the answer.
 
 Previous Conversation:
 {chat_history}
