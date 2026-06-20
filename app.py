@@ -70,7 +70,7 @@ if audio:
 
     question = transcript.text
 
-    st.info(f"🎤 Detected Question: {question}")
+    st.caption(f"🎤 voice input: {question}")
 
 
 typed_question = st.chat_input("Ask SAP CO Question")
@@ -86,7 +86,7 @@ if question:
     )
 
     context = "\n".join(results["documents"][0])
-    st.expander("Retrieved Context").write(context)
+    
 
     # Chat History
     chat_history = ""
