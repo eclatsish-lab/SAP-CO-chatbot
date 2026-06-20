@@ -108,7 +108,14 @@ if question:
     else:
     answer_type = """
 
-
+    Provide:
+    1. Explanation
+    2. Configuration Steps
+    3. T-Codes
+    4. Tables
+    5. Important Notes
+    6. Source Chapter/Page
+    """
     prompt = f"""
     You are a senior SAP CO Consultant.
 
