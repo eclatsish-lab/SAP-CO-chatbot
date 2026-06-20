@@ -87,10 +87,20 @@ if question:
 
     context = "\n".join(results["documents"][0])
 
+    # Chat History
+    chat_history = ""
+
+    for msg in st.session_state.messages[-4:]:
+        chat_history += f"{msg['role']}: {msg['content']}\n"
+
+
     prompt = f"""
     You are a senior SAP CO Consultant.
 
     Always answer in English.
+
+Previous Conversation:
+{chat_history}
 
 Module:
 {module}
@@ -100,6 +110,9 @@ Context:
 
 Question:
 {question}
+
+If the current question refers to previous discussion,
+use the previous conversation to understand it.
 
 Provide:
 1. Explanation
@@ -114,10 +127,16 @@ Provide:
     response = client_openai.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role":"user","content":prompt}
-    
-        ]
-    )
+            {
+            "role": "system",
+            "content": "You are an SAP CO expert. Use previous conversation and context to answer."
+        },
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
+)
     
     response_time = round(time.time() - start, 2)
 
