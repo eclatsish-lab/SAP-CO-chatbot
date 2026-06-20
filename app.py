@@ -94,6 +94,20 @@ if question:
     for msg in st.session_state.messages[-4:]:
         chat_history += f"{msg['role']}: {msg['content']}\n"
 
+    # Decide answer type based on question
+
+    if "table" in question.lower():
+       answer_type = "Provide only the relevant SAP tables."
+
+    elif "t-code" in question.lower() or "tcode" in question.lower():
+        answer_type = "Provide only the relevant SAP T-Codes."
+
+    elif "configuration" in question.lower():
+        answer_type = "Provide only configuration steps."
+
+    else:
+    answer_type = """
+
 
     prompt = f"""
     You are a senior SAP CO Consultant.
@@ -117,6 +131,13 @@ Context:
 
 Question:
 {question}
+
+Instructions:
+{answer_type}
+
+Use the context first.
+Answer only what the user asks.
+"""
 
 If the current question refers to previous discussion,
 use the previous conversation to understand it.
