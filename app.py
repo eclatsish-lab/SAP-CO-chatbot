@@ -6,9 +6,24 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from streamlit_mic_recorder import mic_recorder
 import tempfile
+import sqlite3
 import os
 
 load_dotenv()
+
+conn = sqlite3.connect("chat_history.db", check_same_thread=False)
+cursor = conn.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS chat_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    question TEXT,
+    answer TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
+
+conn.commit()
 
 api_key = os.getenv("OPENAI_API_KEY")
 
@@ -30,6 +45,30 @@ if "messages" not in st.session_state:
 
 st.sidebar.title("SAP CO Modules")
 
+st.sidebar.markdown("---")
+st.sidebar.subheader("📂 Recent Chats")
+
+recent_chats = cursor.execute("""
+SELECT id, question
+FROM chat_history
+ORDER BY id DESC
+LIMIT 10
+""").fetchall()
+
+for chat in recent_chats:
+
+    if st.sidebar.button(
+        chat[1][:30],
+        key=f"chat_{chat[0]}"
+    ):
+
+        result = cursor.execute(
+            "SELECT question, answer FROM chat_history WHERE id=?",
+            (chat[0],)
+        ).fetchone()
+
+        st.session_state.selected_chat = result
+
 module = st.sidebar.selectbox(
     "Select Module",
     [
@@ -46,6 +85,19 @@ st.title("🤖 SAP CO AI Assistant")
 st.subheader("AI-Powered SAP Controlling Knowledge Assistant")
 
 st.markdown("---")
+
+# Show Selected Previous Chat
+if "selected_chat" in st.session_state:
+
+    st.info("📂 Previous Conversation")
+
+    st.chat_message("user").write(
+        st.session_state.selected_chat[0]
+    )
+
+    st.chat_message("assistant").write(
+        st.session_state.selected_chat[1]
+    )
 
 question = None
 
@@ -155,6 +207,14 @@ Answer only what the user asks.
     ]
 )
     
+    answer = response.choices[0].message.content
+
+    cursor.execute(
+        "INSERT INTO chat_history(question, answer) VALUES (?, ?)",
+        (question, answer)
+)
+
+    conn.commit()
     response_time = round(time.time() - start, 2)
 
     st.session_state.messages.append(
