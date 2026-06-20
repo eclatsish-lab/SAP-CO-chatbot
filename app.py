@@ -106,7 +106,7 @@ if question:
         answer_type = "Provide only configuration steps."
 
     else:
-    answer_type = "Provide Explanation, Configuration Steps, T-Codes, Tables and Important Notes."
+        answer_type = "Provide Explanation, Configuration Steps, T-Codes, Tables and Important Notes."
         
     
     prompt = f"""
@@ -139,17 +139,6 @@ Use the context first.
 Answer only what the user asks.
 """
 
-If the current question refers to previous discussion,
-use the previous conversation to understand it.
-
-Provide:
-1. Explanation
-2. Configuration Steps
-3. T-Codes
-4. Tables
-5. Important Notes
-6. Source Chapter/Page
-"""
     start = time.time()
 
     response = client_openai.chat.completions.create(
