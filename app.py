@@ -106,16 +106,14 @@ if question:
         answer_type = "Provide only configuration steps."
 
     else:
-    answer_type = """
-
-    Provide:
-    1. Explanation
-    2. Configuration Steps
-    3. T-Codes
-    4. Tables
-    5. Important Notes
-    6. Source Chapter/Page
-    """
+    answer_type = (
+        "Provide:\n"
+        "1. Explanation\n"
+        "2. Configuration Steps\n"
+        "3. T-Codes\n"
+        "4. Tables\n"
+        "5. Important Notes"
+    )
     prompt = f"""
     You are a senior SAP CO Consultant.
 
