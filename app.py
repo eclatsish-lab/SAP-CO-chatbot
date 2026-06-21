@@ -32,7 +32,7 @@ if not api_key:
     st.stop()
 
 client_openai = OpenAI(
-module = st.sidebar.selectbox(
+    api_key=api_key
 )
 # ChromaDB
 
@@ -48,7 +48,7 @@ st.sidebar.title("SAP CO Modules")
 module = st.sidebar.selectbox(
     "Select Module",
     [
-        "Cost Center Accounting",
+        "Cost Center Accounting",client_openai = OpenAI(
         "Internal Orders",
         "Profit Center Accounting",
         "Activity Based Costing",
