@@ -32,7 +32,7 @@ if not api_key:
     st.stop()
 
 client_openai = OpenAI(
-    api_key=api_key
+module = st.sidebar.selectbox(
 )
 # ChromaDB
 
@@ -44,6 +44,17 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 st.sidebar.title("SAP CO Modules")
+
+module = st.sidebar.selectbox(
+    "Select Module",
+    [
+        "Cost Center Accounting",
+        "Internal Orders",
+        "Profit Center Accounting",
+        "Activity Based Costing",
+        "Product Costing"
+    ]
+)
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("📂 Recent Chats")
@@ -69,16 +80,6 @@ for chat in recent_chats:
 
         st.session_state.selected_chat = result
 
-module = st.sidebar.selectbox(
-    "Select Module",
-    [
-        "Cost Center Accounting",
-        "Internal Orders",
-        "Profit Center Accounting",
-        "Activity Based Costing",
-        "Product Costing"
-    ]
-)
 
 st.title("🤖 SAP CO AI Assistant")
 
