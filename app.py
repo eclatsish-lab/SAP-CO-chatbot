@@ -49,7 +49,7 @@ st.sidebar.title("SAP CO Modules")
 module = st.sidebar.selectbox(
     "Select Module",
     [
-        "Cost Center Accounting",client_openai = OpenAI(
+        "Cost Center Accounting",
         "Internal Orders",
         "Profit Center Accounting",
         "Activity Based Costing",
