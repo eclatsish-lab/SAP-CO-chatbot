@@ -33,7 +33,8 @@ if not api_key:
 
 client_openai = OpenAI(
     api_key=api_key
-)
+ )
+
 # ChromaDB
 
 client_db = chromadb.PersistentClient(path="sap_co_db")
